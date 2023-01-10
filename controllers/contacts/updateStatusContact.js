@@ -1,24 +1,15 @@
-const { Contact } = require("../../models");
+const { updatePartial } = require("../../service");
+const {RequestError} = require("../../helpers");
 
-const updateStatusContact = async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const { favorite } = req.body;    
-   
-    const result = await Contact.findByIdAndUpdate(
-      contactId,
-      { favorite },      
-    );  
-   
-    if (!result) {
-      return res
-        .status(404)
-        .json({ error: `Contact with ID = ${contactId} does not exist` });
-    }
-    res.json(result);
-  } catch (error) {   
-    next(error);
+const updateStatusContact = async (req, res) => {
+  const { contactId } = req.params;
+  const { favorite } = req.body;
+ 
+  const result = await updatePartial(contactId, { favorite });
+  if (!result) {
+    throw RequestError(404, `Contact with ID = ${contactId} does not exist`)     
   }
+  res.json(result);
 };
 
 module.exports = updateStatusContact;
