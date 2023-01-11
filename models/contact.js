@@ -6,7 +6,6 @@ const contactShema = new Schema(
   {
     name: {
       type: String,
-      unique: [true, 'Contact with this name already exists'],
       required: [true, "Set name for contact"],
     },
     email: {
@@ -14,7 +13,8 @@ const contactShema = new Schema(
       unique: true,     
     },
     phone: {
-      type: String,      
+      type: String,
+      unique: [true, 'This phone already exists']      
     },
     favorite: {
       type: Boolean,
