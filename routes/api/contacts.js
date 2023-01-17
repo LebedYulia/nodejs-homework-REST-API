@@ -1,26 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const { validation } = require("../../middlewares");
+const { validation, auth } = require("../../middlewares");
 const { joiSchema, joiSchemaForFavorite } = require("../../models/contact");
-const { controllers: ctrl } = require("../../controllers");
+const { contacts: ctrl } = require("../../controllers");
 const {ctrlWrapper} = require("../../helpers");
 
 
 
 const validateMiddleware = validation(joiSchema);
 
-router.get("/", ctrlWrapper(ctrl.getAllContacts));
+router.get("/", auth, ctrlWrapper(ctrl.getAllContacts));
 
-router.get("/:contactId", ctrlWrapper(ctrl.getContactById));
+router.get("/:contactId", auth, ctrlWrapper(ctrl.getContactById));
 
-router.post("/", validateMiddleware, ctrlWrapper(ctrl.addContact));
+router.post("/", auth, validateMiddleware, ctrlWrapper(ctrl.addContact));
 
-router.delete("/:contactId", ctrlWrapper(ctrl.removeById));
+router.delete("/:contactId", auth, ctrlWrapper(ctrl.removeById));
 
-router.put("/:contactId", validateMiddleware, ctrlWrapper(ctrl.updateContact));
+router.put("/:contactId", auth, validateMiddleware, ctrlWrapper(ctrl.updateContact));
 
 router.patch(
-  "/:contactId/favorite",
+  "/:contactId/favorite",  auth,
   validation(joiSchemaForFavorite),
   ctrlWrapper(ctrl.updateStatusContact)
 );
