@@ -20,7 +20,7 @@ router.delete("/:contactId", auth, ctrlWrapper(ctrl.removeById));
 router.put("/:contactId", auth, validateMiddleware, ctrlWrapper(ctrl.updateContact));
 
 router.patch(
-  "/:contactId/favorite",
+  "/:contactId/favorite",  auth,
   validation(joiSchemaForFavorite),
   ctrlWrapper(ctrl.updateStatusContact)
 );

@@ -1,10 +1,10 @@
-const { getById } = require("../../service");
+const { Contact } = require("../../models");
 const { RequestError } = require("../../helpers");
 
 const getContactById = async (req, res) => {
   const { contactId } = req.params;
   const { _id } = req.user;
-  const result = await getById(contactId, _id);
+  const result = await Contact.findById(contactId, _id);
   if (!result) {
     throw RequestError(404, `Contact with ID = ${contactId} does not exist`);
   }

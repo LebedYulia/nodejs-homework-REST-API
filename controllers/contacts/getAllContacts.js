@@ -1,18 +1,22 @@
-const { getAll } = require("../../service");
+const { Contact } = require("../../models");
 
-const getAllContacts = async (req, res) => {  
+const getAllContacts = async (req, res) => {
   const { _id } = req.user;
-  const {page, limit}  = req.query;
-  const skip= (page -1)*limit;
-  const contacts = await getAll({owner: _id}, '', {skip, limit: +limit});
-  res.status(200)
-  .json({
-    status: 'success',
+  const { page = 1, limit = 20, ...filter } = req.query;
+  console.log(req.query);
+  const skip = (page - 1) * limit;
+  const result = await Contact.find(
+    { owner: _id, ...filter },
+    "-createdAt -updatedAt",
+    { skip, limit: +limit }
+  );
+  res.status(200).json({
+    status: "success",
     code: 200,
     data: {
-      result: contacts
-    }
-    }); 
+      result,
+    },
+  });
 };
 
 module.exports = getAllContacts;

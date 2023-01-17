@@ -1,4 +1,4 @@
-const { updatePartial } = require("../../service");
+const { Contact } = require("../../models");
 const {RequestError} = require("../../helpers");
 
 const updateStatusContact = async (req, res) => {
@@ -6,7 +6,7 @@ const updateStatusContact = async (req, res) => {
   const { _id } = req.user;
   const { favorite } = req.body;
  
-  const result = await updatePartial(contactId, _id, { favorite });
+  const result = await Contact.findByIdAndUpdate(contactId, { favorite }, _id);
   if (!result) {
     throw RequestError(404, `Contact with ID = ${contactId} does not exist`)     
   }

@@ -1,10 +1,10 @@
-const { remove } = require("../../service");
+const { Contact } = require("../../models");
 const {RequestError} = require("../../helpers");
 
 const removeById = async (req, res) => {
   const { contactId } = req.params;
   const { _id } = req.user;
-  const result = await remove(contactId, _id);
+  const result = await Contact.findByIdAndRemove(contactId, _id);
   if (!result) {
     throw RequestError(404, `Contact with ID = ${contactId} does not exist`)     
   }
