@@ -20,7 +20,7 @@ const resendVerifyEmail = async (req, res) => {
     status: "success",
     cod: 200,
     data: {
-      message: "Verification successful",
+      message: "Verification email sent",
     },
   });
 };

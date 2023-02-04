@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
-const nanoid = require("nanoid");
+const { nanoid } = require("nanoid");
 const { User } = require("../../models");
 const { RequestError, sendEmail } = require("../../helpers");
 
@@ -10,9 +10,12 @@ const register = async (req, res) => {
   if (user) {
     throw RequestError(409, "Email in use");
   }
+  
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const avatarURL = gravatar.url(email);
   const verificationToken = nanoid();
+  
+
   const result = await User.create({
     email,
     password: hashPassword,
@@ -33,6 +36,7 @@ const register = async (req, res) => {
         email: result.email,
         subscription: result.subscription,
         avatar: result.avatarURL,
+        verificationToken: result.verificationToken,
       },
     },
   });
