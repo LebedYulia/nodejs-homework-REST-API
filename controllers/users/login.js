@@ -12,6 +12,10 @@ const login = async (req, res) => {
     throw RequestError(401, "Email or password is wrong");
   }
 
+  if (user.verify) {
+    throw RequestError(400, "Email not varify");
+  }
+
   const { SECRET_KEY } = process.env;
   const payload = {
     id: user._id,
@@ -27,7 +31,7 @@ const login = async (req, res) => {
       token,
       user: {
         email: user.email,
-        subscription: user.subscription,
+        subscription: user.subscription,       
       },
     },
   });
